@@ -8,6 +8,22 @@ Un ciudadano registra una queja con fotografía desde el **portal público**; la
 Ciudadano ➜ Frontend (fetch) ➜ Backend/API ➜ Firestore ➜ Backend/API ➜ Panel de Administración
 ```
 
+## Demo en línea
+
+| | URL |
+|---|---|
+| Portal ciudadano | <https://atencion-quejas.onrender.com> |
+| Panel municipal | <https://atencion-quejas.onrender.com/admin.html> |
+| API | <https://atencion-quejas-api.onrender.com/api/health> |
+
+**Credenciales de prueba del panel**
+
+- Usuario: `admin`
+- Contraseña: `Z8lvtSNIQUFJ`
+
+> Credenciales publicadas solo con fines de evaluación académica.
+> La primera carga puede tardar ~1 minuto mientras el servidor gratuito de Render se activa.
+
 ## Estructura
 
 ```
