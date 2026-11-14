@@ -1,0 +1,37 @@
+# Blueprint de Render: crea el backend (API) y el frontend (sitio estático) desde este mismo repositorio.
+# Render → New → Blueprint → selecciona este repo.
+services:
+  # ─── Backend: API REST (Express + Firebase) ───
+  - type: web
+    name: atencion-quejas-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false            # Render la pedirá al crear el Blueprint
+      - key: JWT_SECRET
+        generateValue: true    # Render genera un secreto aleatorio
+      - key: FIREBASE_SERVICE_ACCOUNT_BASE64
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false            # URL del frontend, ej. https://atencion-quejas.onrender.com
+
+  # ─── Frontend: sitio estático (HTML + CSS + JS) ───
+  - type: web
+    name: atencion-quejas
+    runtime: static
+    buildCommand: >-
+      cd frontend &&
+      if [ -n "$API_URL" ]; then echo "window.APP_CONFIG = { API_URL: '$API_URL' };" > js/config.js; fi
+    staticPublishPath: ./frontend
+    envVars:
+      - key: API_URL
+        sync: false            # URL del backend, ej. https://atencion-quejas-api.onrender.com

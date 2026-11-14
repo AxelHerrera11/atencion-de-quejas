@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Municipal · Atención Ciudadana</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ===================== LOGIN ===================== -->
+  <section class="login oculto" id="vista-login">
+    <div class="tarjeta">
+      <span class="marca__icono">📋</span>
+      <h1>Panel Municipal</h1>
+      <p style="margin: 0 0 20px; color: var(--texto-suave);">Ingresa con tus credenciales de personal municipal.</p>
+      <form id="form-login" novalidate>
+        <div class="campo" style="margin-bottom: 14px;">
+          <label for="usuario">Usuario</label>
+          <input class="input" id="usuario" autocomplete="username" required>
+        </div>
+        <div class="campo" style="margin-bottom: 18px;">
+          <label for="contrasena">Contraseña</label>
+          <input class="input" id="contrasena" type="password" autocomplete="current-password" required>
+        </div>
+        <div id="error-login" class="aviso aviso--error oculto" role="alert" style="margin-bottom: 14px;"></div>
+        <button class="btn btn--primario btn--bloque" type="submit" id="btn-login">Ingresar</button>
+      </form>
+      <p style="text-align:center; margin: 18px 0 0;"><a href="index.html">← Volver al portal ciudadano</a></p>
+    </div>
+  </section>
+
+  <!-- ===================== PANEL ===================== -->
+  <div id="vista-panel" class="oculto">
+    <header class="panel-barra">
+      <div class="contenedor">
+        <a class="marca" href="admin.html"><span class="marca__icono">📋</span> Panel Municipal</a>
+        <div class="panel-barra__usuario">
+          <span>👤 <strong id="nombre-usuario"></strong></span>
+          <button class="btn btn--fantasma" id="btn-salir">Cerrar sesión</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="contenedor panel">
+      <div class="panel__cabecera">
+        <div>
+          <h1>Quejas y reportes ciudadanos</h1>
+          <p id="ultima-actualizacion">Cargando…</p>
+        </div>
+        <button class="btn btn--suave" id="btn-refrescar">🔄 Actualizar</button>
+      </div>
+
+      <!-- Indicadores (clic = filtrar por estado) -->
+      <div class="indicadores" id="indicadores">
+        <button class="indicador activo" data-estado="" style="--c: var(--lavanda)"><span class="indicador__valor" data-total="total">–</span><span class="indicador__etiqueta">Total</span></button>
+        <button class="indicador" data-estado="pendiente" style="--c: var(--durazno)"><span class="indicador__valor" data-total="pendiente">–</span><span class="indicador__etiqueta">Pendientes</span></button>
+        <button class="indicador" data-estado="en_proceso" style="--c: var(--cielo)"><span class="indicador__valor" data-total="en_proceso">–</span><span class="indicador__etiqueta">En proceso</span></button>
+        <button class="indicador" data-estado="resuelta" style="--c: var(--menta)"><span class="indicador__valor" data-total="resuelta">–</span><span class="indicador__etiqueta">Resueltas</span></button>
+        <button class="indicador" data-estado="rechazada" style="--c: var(--rosa)"><span class="indicador__valor" data-total="rechazada">–</span><span class="indicador__etiqueta">Rechazadas</span></button>
+      </div>
+
+      <!-- Filtros -->
+      <form class="tarjeta filtros" id="form-filtros" style="padding: 16px;">
+        <div class="campo">
+          <label for="f-texto">Buscar</label>
+          <input class="input" id="f-texto" name="q" placeholder="Código, nombre, descripción, dirección…">
+        </div>
+        <div class="campo">
+          <label for="f-estado">Estado</label>
+          <select class="select" id="f-estado" name="estado"><option value="">Todos</option></select>
+        </div>
+        <div class="campo">
+          <label for="f-categoria">Categoría</label>
+          <select class="select" id="f-categoria" name="categoria"><option value="">Todas</option></select>
+        </div>
+        <div class="campo">
+          <label for="f-zona">Zona</label>
+          <select class="select" id="f-zona" name="zona"><option value="">Todas</option></select>
+        </div>
+        <div class="campo">
+          <label for="f-desde">Desde</label>
+          <input class="input" type="date" id="f-desde" name="desde">
+        </div>
+        <div class="campo">
+          <label for="f-hasta">Hasta</label>
+          <input class="input" type="date" id="f-hasta" name="hasta">
+        </div>
+        <button type="reset" class="btn btn--fantasma">Limpiar</button>
+      </form>
+
+      <div class="disposicion-panel">
+        <section aria-labelledby="titulo-lista">
+          <h2 id="titulo-lista" class="sr-only">Listado de quejas</h2>
+          <p id="conteo-resultados" style="margin: 0 0 10px; color: var(--texto-suave); font-size: .9rem;"></p>
+          <div class="lista-quejas" id="lista-quejas">
+            <div class="cargando"><span class="spinner spinner--oscuro"></span> Cargando quejas…</div>
+          </div>
+        </section>
+
+        <aside class="tarjeta" style="padding: 20px;">
+          <h2 style="margin: 0 0 4px; font-size: 1rem;">Por categoría</h2>
+          <p style="margin: 0 0 14px; color: var(--texto-suave); font-size: .85rem;">Distribución de todas las quejas</p>
+          <div class="barra-categorias" id="barra-categorias"></div>
+          <hr style="border: 0; border-top: 1px solid var(--borde); margin: 18px 0;">
+          <div style="display:flex; justify-content: space-between; font-size: .9rem;">
+            <span>Últimas 24 horas</span><strong id="ultimas24h">–</strong>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== DETALLE ===================== -->
+  <div class="fondo-modal oculto" id="fondo-detalle"></div>
+  <aside class="detalle oculto" id="detalle" role="dialog" aria-modal="true" aria-labelledby="detalle-titulo">
+    <div class="detalle__cabecera">
+      <h2 id="detalle-titulo">Detalle de la queja</h2>
+      <button class="btn btn--fantasma" id="cerrar-detalle" aria-label="Cerrar detalle">✕</button>
+    </div>
+    <div class="detalle__cuerpo" id="detalle-cuerpo"></div>
+  </aside>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

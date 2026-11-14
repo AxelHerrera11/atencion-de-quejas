@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atención Ciudadana · Registra tu queja</title>
+  <meta name="description" content="Portal municipal para registrar quejas y reportes ciudadanos con fotografía.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <div class="encabezado__barra">
+        <a class="marca" href="index.html"><span class="marca__icono">🏛️</span> Atención Ciudadana</a>
+        <a class="encabezado__enlace" href="admin.html">Personal municipal →</a>
+      </div>
+      <div class="hero">
+        <h1>¿Viste algo que debemos mejorar?</h1>
+        <p>Cuéntanos qué ocurre en tu comunidad, adjunta una foto y nuestro equipo municipal le dará seguimiento.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor" style="max-width: 820px;">
+    <div class="pestanas" role="tablist" aria-label="Opciones del portal">
+      <button class="pestana" role="tab" id="tab-registrar" aria-controls="vista-registrar" aria-selected="true">📝 Registrar queja</button>
+      <button class="pestana" role="tab" id="tab-seguimiento" aria-controls="vista-seguimiento" aria-selected="false">🔎 Consultar seguimiento</button>
+    </div>
+
+    <!-- ===================== REGISTRAR ===================== -->
+    <section id="vista-registrar" role="tabpanel" aria-labelledby="tab-registrar">
+      <form id="form-queja" novalidate>
+        <div id="aviso-form" class="aviso aviso--error oculto" role="alert" style="margin-bottom: 16px;"></div>
+
+        <!-- Paso 1 -->
+        <div class="tarjeta">
+          <h2 class="seccion-titulo"><span class="paso">1</span> Tus datos</h2>
+          <p class="seccion-desc">Los usamos solo para contactarte sobre tu reporte.</p>
+          <label class="interruptor">
+            <input type="checkbox" id="anonimo" name="anonimo">
+            Prefiero enviar mi queja de forma anónima
+          </label>
+          <div class="grid-3" id="datos-personales">
+            <div class="campo" data-campo="nombre">
+              <label for="nombre">Nombre completo</label>
+              <input class="input" id="nombre" name="nombre" autocomplete="name" maxlength="80" placeholder="Ej. María López">
+              <small class="msg-error"></small>
+            </div>
+            <div class="campo" data-campo="telefono">
+              <label for="telefono">Teléfono <span class="opcional">(opcional)</span></label>
+              <input class="input" id="telefono" name="telefono" type="tel" inputmode="numeric" autocomplete="tel" maxlength="9" placeholder="5555 1234">
+              <small class="msg-error"></small>
+            </div>
+            <div class="campo" data-campo="correo">
+              <label for="correo">Correo <span class="opcional">(opcional)</span></label>
+              <input class="input" id="correo" name="correo" type="email" autocomplete="email" maxlength="120" placeholder="tucorreo@ejemplo.com">
+              <small class="msg-error"></small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="tarjeta">
+          <h2 class="seccion-titulo"><span class="paso">2</span> ¿Qué tipo de problema es?</h2>
+          <p class="seccion-desc">Elige la categoría que mejor lo describa.</p>
+          <div class="campo" data-campo="categoria">
+            <div class="categorias" id="categorias" role="radiogroup" aria-label="Categoría">
+              <div class="cargando"><span class="spinner spinner--oscuro"></span> Cargando categorías…</div>
+            </div>
+            <small class="msg-error"></small>
+          </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="tarjeta">
+          <h2 class="seccion-titulo"><span class="paso">3</span> ¿Dónde ocurre?</h2>
+          <p class="seccion-desc">Mientras más precisa la ubicación, más rápido podemos atenderlo.</p>
+          <div class="grid-2">
+            <div class="campo" data-campo="zona">
+              <label for="zona">Zona</label>
+              <select class="select" id="zona" name="zona">
+                <option value="">Selecciona una zona…</option>
+              </select>
+              <small class="msg-error"></small>
+            </div>
+            <div class="campo" data-campo="direccion">
+              <label for="direccion">Dirección o lugar</label>
+              <input class="input" id="direccion" name="direccion" maxlength="150" placeholder="Ej. 3a. calle 4-20, frente al mercado">
+              <small class="msg-error"></small>
+            </div>
+          </div>
+          <div class="campo" data-campo="referencia" style="margin-top: 16px;">
+            <label for="referencia">Punto de referencia <span class="opcional">(opcional)</span></label>
+            <input class="input" id="referencia" name="referencia" maxlength="150" placeholder="Ej. a la par de la iglesia, casa color verde">
+            <small class="msg-error"></small>
+          </div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="tarjeta">
+          <h2 class="seccion-titulo"><span class="paso">4</span> Cuéntanos qué pasa</h2>
+          <p class="seccion-desc">Describe el problema con tus palabras: desde cuándo ocurre, a quién afecta, etc.</p>
+          <div class="campo" data-campo="descripcion">
+            <label for="descripcion" class="sr-only">Descripción</label>
+            <textarea class="textarea" id="descripcion" name="descripcion" maxlength="2000"
+              placeholder="Ej. Desde hace dos semanas hay un bache grande en la esquina que ya provocó que se cayera un motorista…"></textarea>
+            <div style="display:flex; justify-content: space-between; gap: 10px;">
+              <small class="msg-error"></small>
+              <span class="contador" id="contador">0 / 2000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="tarjeta">
+          <h2 class="seccion-titulo"><span class="paso">5</span> Adjunta una fotografía</h2>
+          <p class="seccion-desc">Una imagen nos ayuda a entender mejor el problema. Formatos JPG, PNG o WEBP (máx. 8 MB).</p>
+          <div class="campo" data-campo="foto">
+            <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp,image/heic" class="sr-only">
+            <label for="foto" class="zona-foto" id="zona-foto">
+              <div class="zona-foto__icono">📷</div>
+              <strong>Toca para tomar o elegir una foto</strong>
+              <p>o arrástrala aquí</p>
+            </label>
+            <div class="vista-previa oculto" id="vista-previa">
+              <img id="img-previa" alt="Vista previa de la fotografía adjunta">
+              <div class="vista-previa__info">
+                <strong id="nombre-foto"></strong>
+                <small id="peso-foto"></small>
+              </div>
+              <button type="button" class="btn btn--fantasma" id="quitar-foto">Quitar</button>
+            </div>
+            <small class="msg-error"></small>
+          </div>
+        </div>
+
+        <div class="acciones">
+          <button type="reset" class="btn btn--fantasma">Limpiar</button>
+          <button type="submit" class="btn btn--primario btn--grande" id="btn-enviar">Enviar queja</button>
+        </div>
+      </form>
+
+      <!-- Confirmación -->
+      <div class="tarjeta confirmacion oculto" id="confirmacion" tabindex="-1">
+        <div class="confirmacion__icono">✅</div>
+        <h2 style="margin: 0;">¡Gracias! Recibimos tu queja</h2>
+        <p style="color: var(--texto-suave); margin: 8px 0 0;">Guarda este código para consultar el avance de tu reporte:</p>
+        <div class="codigo"><span id="codigo-generado"></span><button type="button" id="copiar-codigo">Copiar</button></div>
+        <p style="color: var(--texto-suave); margin: 0 0 24px;" id="fecha-registro"></p>
+        <div style="display:flex; gap: 12px; justify-content:center; flex-wrap: wrap;">
+          <button type="button" class="btn btn--suave" id="ver-seguimiento">Ver seguimiento</button>
+          <button type="button" class="btn btn--primario" id="nueva-queja">Registrar otra queja</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SEGUIMIENTO ===================== -->
+    <section id="vista-seguimiento" role="tabpanel" aria-labelledby="tab-seguimiento" class="oculto">
+      <div class="tarjeta">
+        <h2 class="seccion-titulo">🔎 Consulta el estado de tu queja</h2>
+        <p class="seccion-desc">Ingresa el código que recibiste al registrar tu reporte.</p>
+        <form class="buscador-codigo" id="form-seguimiento" novalidate>
+          <label for="codigo" class="sr-only">Código de seguimiento</label>
+          <input class="input" id="codigo" placeholder="Q-20261114-AB12C" autocomplete="off" maxlength="17">
+          <button class="btn btn--primario" type="submit" id="btn-buscar">Consultar</button>
+        </form>
+        <div id="resultado-seguimiento" style="margin-top: 18px;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">Sistema de Atención de Quejas Ciudadanas · Facultad de Ingeniería UMG</footer>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/portal.js"></script>
+</body>
+</html>
